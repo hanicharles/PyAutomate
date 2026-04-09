@@ -1,0 +1,29 @@
+MEETING SUMMARY
+==================================================
+
+Generated: 2026-03-21T21:40:59.284292
+Words: 408 | Sentences: 27
+
+SUMMARY
+------------------------------
+Teacher: Now tell me… do we need to define the data type in Python like in C or Java? 📌 Topic: Data Types Teacher: Python has different data types: int → 10 float → 3.14 string → "hello" boolean → True/False list → [1,2,3] tuple → (1,2,3) dictionary → {"a":1} Student 3: Ma’am what is the difference between list and tuple? if num > 0: print("Positive") elif num == 0: print("Zero") else: print("Negative") 📌 Topic: Loops Teacher: There are two main loops: for loop while loop Example: for i in range(5): print(i) Student 2: What does range(5) do? Teacher: Using index: print(marks[0]) 📌 Topic: Strings Teacher: Strings are sequences of characters. name = "Python" print(name.lower()) print(name.upper()) 📌 Topic: File Handling Teacher: Now file handling: file = open("test.txt", "r") data = file.read() print(data) file.close() Student 2: Ma’am what is "r"? class Student: def __init__(self, name): self.name = name def display(self): print(self.name) s = Student("Hani") s.display() Student 3: Ma’am what is self?
+
+KEYWORDS
+------------------------------
+  • teacher (20x)
+  • print (14x)
+  • student (11x)
+  • name (9x)
+  • topic (8x)
+  • python (7x)
+  • data (6x)
+  • file (5x)
+  • self (5x)
+  • marks (4x)
+
+ACTION ITEMS
+------------------------------
+  ☐ Teacher: Now tell me… do we need to define the data type in Python like in C or Java?
+
+DECISIONS
+------------------------------

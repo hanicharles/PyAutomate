@@ -1,0 +1,2 @@
+city,timestamp,temp_c,temp_f,feels_like_c,humidity,description,icon,wind_kmph,uv_index,sunrise,sunset,max_temp_c,min_temp_c
+"Bengaluru, India",2026-04-06T09:20:45.149474,26.8,80.2,28.6,53,Mainly clear,🌤️,7.4,4.55,06:12,18:31,34.3,21.5

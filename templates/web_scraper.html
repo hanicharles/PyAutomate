@@ -1,0 +1,251 @@
+{% extends "base.html" %}
+{% block title %}PyAutomate — Web Scraper{% endblock %}
+{% block page_title %}<i class="bi bi-globe"></i> Web Scraper{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+
+    <!-- ── WEATHER ── -->
+    <div class="col-lg-4">
+        <div class="card border-0 rounded-4 h-100">
+            <div class="card-header bg-transparent border-0 pt-4 px-4">
+                <h5 class="fw-semibold"><i class="bi bi-cloud-sun text-warning"></i> Weather</h5>
+                <p class="text-muted small mb-0">Free · No API key needed</p>
+            </div>
+            <div class="card-body px-4 pb-4">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" id="weatherCity"
+                           placeholder="Enter city name..." value="Bengaluru">
+                    <button class="btn btn-warning" onclick="scrapeWeather()">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+                <div class="d-flex flex-wrap gap-1 mb-3">
+                    <button class="btn btn-sm btn-outline-secondary" onclick="quickCity('Bengaluru')">🇮🇳 Bengaluru</button>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="quickCity('Mumbai')">Mumbai</button>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="quickCity('Delhi')">Delhi</button>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="quickCity('London')">🇬🇧 London</button>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="quickCity('New York')">🇺🇸 NY</button>
+                </div>
+
+                <div id="weatherResult" class="d-none">
+                    <div class="text-center py-3 rounded-3 mb-3" style="background:#151821">
+                        <div id="weatherIcon" class="display-2 mb-1"></div>
+                        <h2 id="weatherTemp" class="fw-bold mb-0"></h2>
+                        <p id="weatherDesc" class="text-muted mb-1"></p>
+                        <small id="weatherCityName" class="text-primary fw-semibold"></small>
+                    </div>
+                    <div class="row g-2" id="weatherDetails"></div>
+                </div>
+
+                <div id="weatherLoading" class="text-center py-4 d-none">
+                    <div class="spinner-border text-warning" role="status"></div>
+                    <p class="text-muted mt-2 small">Fetching weather...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── NEWS ── -->
+    <div class="col-lg-4">
+        <div class="card border-0 rounded-4 h-100">
+            <div class="card-header bg-transparent border-0 pt-4 px-4">
+                <h5 class="fw-semibold"><i class="bi bi-newspaper text-success"></i> News</h5>
+            </div>
+            <div class="card-body px-4 pb-4">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" id="newsTopic"
+                           placeholder="Topic (blank = top news)...">
+                    <button class="btn btn-success" onclick="scrapeNews()">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+                <div class="d-flex flex-wrap gap-1 mb-3">
+                    <button class="btn btn-sm btn-outline-secondary" onclick="quickNews('technology')">💻 Tech</button>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="quickNews('business')">💼 Business</button>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="quickNews('sports')">⚽ Sports</button>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="quickNews('india')">🇮🇳 India</button>
+                </div>
+                <div id="newsResult" class="d-none" style="max-height:350px;overflow-y:auto"></div>
+                <div id="newsLoading" class="text-center py-4 d-none">
+                    <div class="spinner-border text-success" role="status"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── STOCKS ── -->
+    <div class="col-lg-4">
+        <div class="card border-0 rounded-4 h-100">
+            <div class="card-header bg-transparent border-0 pt-4 px-4">
+                <h5 class="fw-semibold"><i class="bi bi-graph-up-arrow text-info"></i> Stocks & Crypto</h5>
+            </div>
+            <div class="card-body px-4 pb-4">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" id="stockSymbols"
+                           placeholder="AAPL GOOGL MSFT TSLA...">
+                    <button class="btn btn-info" onclick="scrapeStocks()">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+                <div class="d-flex flex-wrap gap-1 mb-3">
+                    <button class="btn btn-sm btn-outline-secondary" onclick="quickStocks('AAPL GOOGL MSFT')">🇺🇸 Big Tech</button>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="quickStocks('TSLA NVDA AMD')">⚡ EV/AI</button>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="quickStocks('RELIANCE.NS TCS.NS INFY.NS')">🇮🇳 NSE</button>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="quickStocks('BTC-USD ETH-USD')">₿ Crypto</button>
+                </div>
+                <div id="stocksResult" class="d-none"></div>
+                <div id="stocksLoading" class="text-center py-4 d-none">
+                    <div class="spinner-border text-info" role="status"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function quickCity(city) {
+    document.getElementById('weatherCity').value = city;
+    scrapeWeather();
+}
+
+async function scrapeWeather() {
+    const city = document.getElementById('weatherCity').value.trim() || 'Bengaluru';
+    setLoading('weatherLoading', true);
+    document.getElementById('weatherResult').classList.add('d-none');
+
+    const result = await apiCall('/api/scraper/weather', 'POST', { city });
+    setLoading('weatherLoading', false);
+
+    if (result.success && result.data) {
+        const d = result.data;
+        document.getElementById('weatherIcon').textContent = d.icon || '🌡️';
+        document.getElementById('weatherTemp').textContent = `${d.temp_c}°C / ${d.temp_f}°F`;
+        document.getElementById('weatherDesc').textContent = d.description;
+        document.getElementById('weatherCityName').textContent = d.city;
+
+        document.getElementById('weatherDetails').innerHTML = `
+            <div class="col-6"><div class="p-2 rounded-3 text-center" style="background:#151821">
+                <i class="bi bi-droplet text-info"></i>
+                <small class="text-muted d-block">Humidity</small><strong>${d.humidity}%</strong>
+            </div></div>
+            <div class="col-6"><div class="p-2 rounded-3 text-center" style="background:#151821">
+                <i class="bi bi-wind text-success"></i>
+                <small class="text-muted d-block">Wind</small><strong>${d.wind_kmph} km/h</strong>
+            </div></div>
+            <div class="col-6"><div class="p-2 rounded-3 text-center" style="background:#151821">
+                <i class="bi bi-thermometer-half text-danger"></i>
+                <small class="text-muted d-block">Feels Like</small><strong>${d.feels_like_c}°C</strong>
+            </div></div>
+            <div class="col-6"><div class="p-2 rounded-3 text-center" style="background:#151821">
+                <i class="bi bi-sun text-warning"></i>
+                <small class="text-muted d-block">UV Index</small><strong>${d.uv_index}</strong>
+            </div></div>
+            <div class="col-6"><div class="p-2 rounded-3 text-center" style="background:#151821">
+                <i class="bi bi-sunrise text-warning"></i>
+                <small class="text-muted d-block">Sunrise</small><strong>${d.sunrise}</strong>
+            </div></div>
+            <div class="col-6"><div class="p-2 rounded-3 text-center" style="background:#151821">
+                <i class="bi bi-sunset text-danger"></i>
+                <small class="text-muted d-block">Sunset</small><strong>${d.sunset}</strong>
+            </div></div>
+            <div class="col-12"><div class="p-2 rounded-3 text-center" style="background:#151821">
+                <small class="text-muted">Today Range: </small>
+                <strong class="text-danger">↑ ${d.max_temp_c}°C</strong>
+                <strong class="text-info ms-2">↓ ${d.min_temp_c}°C</strong>
+            </div></div>`;
+
+        document.getElementById('weatherResult').classList.remove('d-none');
+        showToast('Weather', `Loaded for ${d.city}`, 'success');
+    } else {
+        showToast('Error', 'Could not fetch weather. Try a different city name.', 'error');
+    }
+}
+
+function quickNews(topic) {
+    document.getElementById('newsTopic').value = topic;
+    scrapeNews();
+}
+
+async function scrapeNews() {
+    const topic = document.getElementById('newsTopic').value.trim();
+    setLoading('newsLoading', true);
+    document.getElementById('newsResult').classList.add('d-none');
+
+    const result = await apiCall('/api/scraper/news', 'POST', { topic });
+    setLoading('newsLoading', false);
+
+    if (result.success && result.data.length > 0) {
+        const items = result.data.slice(0, 10).map(a => `
+            <a href="${a.link}" target="_blank" class="text-decoration-none">
+                <div class="py-2 px-2 mb-1 rounded-2 news-item">
+                    <p class="small fw-semibold mb-0 text-light">${a.title}</p>
+                    <small class="text-muted">${a.source || ''}</small>
+                </div>
+            </a>`).join('');
+        document.getElementById('newsResult').innerHTML = items;
+        document.getElementById('newsResult').classList.remove('d-none');
+        showToast('News', `${result.data.length} articles fetched`, 'success');
+    } else {
+        showToast('Error', 'Could not fetch news', 'error');
+    }
+}
+
+function quickStocks(symbols) {
+    document.getElementById('stockSymbols').value = symbols;
+    scrapeStocks();
+}
+
+async function scrapeStocks() {
+    const input = document.getElementById('stockSymbols').value.trim() || 'AAPL GOOGL MSFT';
+    const symbols = input.toUpperCase().split(/\s+/);
+    setLoading('stocksLoading', true);
+    document.getElementById('stocksResult').classList.add('d-none');
+
+    const result = await apiCall('/api/scraper/stocks', 'POST', { symbols });
+    setLoading('stocksLoading', false);
+
+    if (result.success && result.data.length > 0) {
+        const items = result.data.map(s => {
+            if (s.price === 'Error') {
+                return `<div class="d-flex justify-content-between py-2 border-bottom border-secondary border-opacity-25">
+                    <strong>${s.symbol}</strong><small class="text-danger">Fetch failed</small></div>`;
+            }
+            const up = s.change_pct >= 0;
+            const color = up ? 'success' : 'danger';
+            const arrow = up ? '▲' : '▼';
+            return `
+                <div class="d-flex justify-content-between align-items-center py-2 border-bottom border-secondary border-opacity-25">
+                    <div>
+                        <strong>${s.symbol}</strong>
+                        <small class="text-muted d-block">${s.name || s.exchange || ''}</small>
+                    </div>
+                    <div class="text-end">
+                        <strong>${s.currency === 'USD' ? '$' : ''}${s.price}</strong>
+                        <div>
+                            <span class="badge bg-${color} bg-opacity-25 text-${color}">
+                                ${arrow} ${Math.abs(s.change)} (${s.change_pct > 0 ? '+' : ''}${s.change_pct}%)
+                            </span>
+                        </div>
+                    </div>
+                </div>`;
+        }).join('');
+        document.getElementById('stocksResult').innerHTML = `<div class="mt-1">${items}</div>`;
+        document.getElementById('stocksResult').classList.remove('d-none');
+        showToast('Stocks', `${result.data.length} prices fetched`, 'success');
+    } else {
+        showToast('Error', 'Could not fetch stocks', 'error');
+    }
+}
+
+// Auto-load weather on page open
+window.addEventListener('load', () => scrapeWeather());
+</script>
+<style>
+.news-item { background: #151821; transition: all 0.2s; }
+.news-item:hover { background: #1a1d26 !important; padding-left: 10px !important; border-left: 3px solid var(--accent-primary); }
+</style>
+{% endblock %}

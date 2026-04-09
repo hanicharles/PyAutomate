@@ -1,0 +1,29 @@
+MEETING SUMMARY
+==================================================
+
+Generated: 2026-03-21T22:27:41.166982
+Words: 233 | Sentences: 8
+
+SUMMARY
+------------------------------
+--- ### 📌 Topic: Data Types **Teacher:** Python has different data types: * int → `10` * float → `3.14` * string → `"hello"` * boolean → `True/False` * list → `[1,2,3]` * tuple → `(1,2,3)` * dictionary → `{"a":1}` --- **Student 3:** Ma’am what is the difference between list and tuple? ```python name = "Python" print(name.lower()) print(name.upper()) ``` --- ### 📌 Topic: File Handling **Teacher:** Now file handling: ```python file = open("test.txt", "r") data = file.read() print(data) file.close() ``` --- **Student 2:** Ma’am what is `"r"`? ```python class Student: def __init__(self, name): self.name = name def display(self): print(self.name) s = Student("Hani") s.display() ``` --- **Student 3:** Ma’am what is `self`?
+
+KEYWORDS
+------------------------------
+  • python (12x)
+  • teacher (9x)
+  • print (9x)
+  • name (7x)
+  • data (5x)
+  • topic (5x)
+  • student (5x)
+  • file (5x)
+  • self (5x)
+  • like (2x)
+
+ACTION ITEMS
+------------------------------
+  ☐ --- **Teacher:** Now tell me… do we need to define the data type in Python like in C or Java?
+
+DECISIONS
+------------------------------

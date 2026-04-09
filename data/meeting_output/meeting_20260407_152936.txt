@@ -1,0 +1,35 @@
+📘 Class Summary Notes ([Main Topics Covered])
+
+🗂️ 1. **Database Types**
+- **Structured Data**: organized and formatted data
+- **Unstructured Data**: unorganized and unformatted data
+- Key difference: structure and organization
+
+🧠 2. **NoSQL Databases**
+- **NoSQL**: Not only SQL, a type of database that doesn't use traditional table-based relational model
+- Example: MongoDB
+
+📊 3. **Assignment and Project**
+- Create a Language Model (LLM) for a specific task
+- Use RATHOD model for information retrieval
+- Example: building a question-answering system for University policies
+
+🎯 4. **Goal and Deadline**
+- Main goal: create a database storage system
+- Deadline: complete the assignment by today evening
+
+🧩 5. **Implementation Notes**
+- Use NVIDIA API key for API calls
+- No need to download the LLM into the system
+
+🛠️ 6. **Technical Guidance**
+- Use the API calls to call the elements
+- Easy implementation using the API key
+
+⏰ 7. **No Deadlines Mentioned**
+
+🧾 Key Takeaways
+- Understand the difference between structured and unstructured data
+- Learn about NoSQL databases and their applications
+- Create a Language Model (LLM) for a specific task using RATHOD model
+- Use NVIDIA API key for API calls

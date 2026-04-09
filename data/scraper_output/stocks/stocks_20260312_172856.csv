@@ -1,0 +1,3 @@
+symbol,price,prev_close,change,change_pct,currency,exchange,name,timestamp
+BTC-USD,70478.6,70204.88,273.72,0.39,USD,CCC,Bitcoin USD,2026-03-12T17:28:55.146913
+ETH-USD,2062.83,2051.57,11.26,0.55,USD,CCC,Ethereum USD,2026-03-12T17:28:56.105110

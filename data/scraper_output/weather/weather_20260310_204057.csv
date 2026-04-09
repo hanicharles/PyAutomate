@@ -1,0 +1,2 @@
+city,timestamp,temp_c,temp_f,feels_like_c,humidity,description,icon,wind_kmph,uv_index,sunrise,sunset,max_temp_c,min_temp_c
+"Bengaluru, India",2026-03-10T20:40:57.065685,25.3,77.5,25.0,43,Partly cloudy,⛅,6.6,0.0,06:30,18:29,30.7,18.5

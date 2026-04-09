@@ -1,0 +1,38 @@
+📘 Class Summary Notes (Database and LLM)
+
+🗂️ 1. **Database Overview**
+- MongoDB: a type of database
+- NoSQL (Not Only SQL): a database that stores data in a different way
+- Structured vs Unstructured Data:
+  - Structured data: organized and follows a specific format
+  - Unstructured data: does not follow a specific format
+
+🧠 2. **Assignment and LLM**
+- Create a Language Model (LLM) using a database
+- Provide feedback through RATHOD
+- Example use cases:
+  - University policies
+  - Fees for AI courses
+  - Exam rules and grading system
+
+📊 3. **Database Storage**
+- Main goal: create a database storage using a vector database (mainly the rack model) and LLM
+- Use API calls to interact with the database (no need to download the LLM)
+
+🧩 4. **Assignment and Deadline**
+- Assignment: create a database storage using a vector database and LLM
+- Deadline: complete the assignment by today evening
+
+🛠️ 5. **Implementation Notes**
+- Use the NVIDIA API key to interact with the database
+- It is possible to work offline with the LLM, but it will take a lot of space
+
+⏰ 6. **Attendance**
+- Take attendance at the end of the class
+
+🧾 Key Takeaways
+- MongoDB is a type of database
+- NoSQL databases store data in a different way
+- Create a database storage using a vector database and LLM
+- Use API calls to interact with the database
+- Complete the assignment by today evening

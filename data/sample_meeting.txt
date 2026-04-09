@@ -1,0 +1,14 @@
+Good morning everyone. Welcome to our weekly standup.
+Today we will discuss Q4 targets and the new product launch.
+John mentioned that the backend API is 80 percent complete.
+We need to finish the remaining endpoints by January 30th.
+Sarah confirmed that UI mockups are finalized.
+We decided to use React for the frontend framework.
+We agreed to allocate 50000 dollars for marketing.
+The launch date has been confirmed for March 15th.
+Action items: John will complete backend by January 30th.
+Sarah will start frontend development next Monday.
+Mike needs to prepare cloud infrastructure comparison.
+Who will handle the client presentation next week?
+What is the fallback plan if the deadline is missed?
+Next meeting scheduled for February 1st at 10 AM.

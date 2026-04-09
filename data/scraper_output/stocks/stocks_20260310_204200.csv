@@ -1,0 +1,4 @@
+symbol,price,prev_close,change,change_pct,currency,exchange,name,timestamp
+TSLA,404.1,396.73,7.37,1.86,USD,NMS,"Tesla, Inc.",2026-03-10T20:41:58.744641
+NVDA,185.65,177.82,7.83,4.4,USD,NMS,NVIDIA Corporation,2026-03-10T20:41:59.426509
+AMD,205.6,192.43,13.17,6.84,USD,NMS,"Advanced Micro Devices, Inc.",2026-03-10T20:42:00.084820

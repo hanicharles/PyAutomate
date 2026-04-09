@@ -1,0 +1,21 @@
+type,content,count
+keyword,next,3
+keyword,launch,2
+keyword,john,2
+keyword,backend,2
+keyword,complete,2
+keyword,january,2
+keyword,sarah,2
+keyword,confirmed,2
+keyword,frontend,2
+keyword,good,1
+action_item,We need to finish the remaining endpoints by January 30th.,
+action_item,Action items: John will complete backend by January 30th.,
+action_item,Sarah will start frontend development next Monday.,
+action_item,Mike needs to prepare cloud infrastructure comparison.,
+action_item,Who will handle the client presentation next week?,
+action_item,What is the fallback plan if the deadline is missed?,
+decision,Sarah confirmed that UI mockups are finalized.,
+decision,We decided to use React for the frontend framework.,
+decision,We agreed to allocate 50000 dollars for marketing.,
+decision,The launch date has been confirmed for March 15th.,

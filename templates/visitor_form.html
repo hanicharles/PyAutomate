@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Visitor Form — PyAutomate{% endblock %}
+{% block page_title %}<i class="bi bi-person-plus"></i> Visitor Registration{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-0 rounded-4 shadow-sm">
+            <div class="card-header bg-transparent border-0 pt-4 px-4 text-center">
+                <h4 class="fw-bold mb-0">Welcome!</h4>
+                <p class="text-muted small">Please fill in your details</p>
+            </div>
+            <div class="card-body px-4 pb-4">
+                <form id="visitorForm">
+                    <div class="mb-3">
+                        <label class="form-label small text-muted">Full Name</label>
+                        <input type="text" class="form-control" id="visitorName" placeholder="Enter your name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small text-muted">Email Address</label>
+                        <input type="email" class="form-control" id="visitorEmail" placeholder="your@email.com" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small text-muted">Reason for Visit</label>
+                        <textarea class="form-control" id="visitorReason" rows="3" placeholder="Why are you visiting today?" required></textarea>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary py-2">
+                            <i class="bi bi-check-circle"></i> Submit Details
+                        </button>
+                    </div>
+                </form>
+                <div id="successMessage" class="d-none text-center py-4">
+                    <i class="bi bi-check-circle-fill text-success display-4"></i>
+                    <h5 class="mt-3">Thank you!</h5>
+                    <p class="text-muted">Your details have been registered. An email has been sent to you.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById('visitorForm').onsubmit = async (e) => {
+    e.preventDefault();
+    const data = {
+        name: document.getElementById('visitorName').value,
+        email: document.getElementById('visitorEmail').value,
+        reason: document.getElementById('visitorReason').value,
+    };
+    
+    const submitBtn = e.target.querySelector('button');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Submitting...';
+    
+    try {
+        const result = await apiCall('/api/visitor/submit', 'POST', data);
+        if (result.success) {
+            document.getElementById('visitorForm').classList.add('d-none');
+            document.getElementById('successMessage').classList.remove('d-none');
+            showToast('Success', 'Details submitted successfully', 'success');
+        } else {
+            showToast('Error', result.error || 'Submission failed', 'error');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="bi bi-check-circle"></i> Submit Details';
+        }
+    } catch (err) {
+        showToast('Error', 'Something went wrong', 'error');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="bi bi-check-circle"></i> Submit Details';
+    }
+};
+</script>
+{% endblock %}

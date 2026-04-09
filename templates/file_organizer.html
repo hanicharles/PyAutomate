@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% block title %}PyAutomate — File Organizer{% endblock %}
+{% block page_title %}<i class="bi bi-folder2-open"></i> File Organizer{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card border-0 rounded-4 mb-4">
+            <div class="card-header bg-transparent border-0 pt-4 px-4">
+                <h5 class="fw-semibold"><i class="bi bi-folder2-open text-primary"></i> Organize Your Files</h5>
+                <p class="text-muted small mb-0">Scan and organize files into categorized subfolders automatically</p>
+            </div>
+            <div class="card-body px-4 pb-4">
+                <div class="input-group mb-3">
+                    <span class="input-group-text bg-transparent"><i class="bi bi-folder"></i></span>
+                    <input type="text" class="form-control" id="sourceDirInput"
+                           placeholder="Source directory (leave blank for Downloads folder)">
+                    <button class="btn btn-outline-primary px-4" onclick="scanFiles()">
+                        <i class="bi bi-search"></i> Scan
+                    </button>
+                </div>
+
+                <div id="scanResults" class="d-none">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="fw-semibold mb-0" id="scanTitle">Scan Results</h6>
+                        <button class="btn btn-primary" onclick="organizeFiles()">
+                            <i class="bi bi-magic"></i> Organize All
+                        </button>
+                    </div>
+                    <div id="categoryBadges" class="d-flex flex-wrap gap-2 mb-3"></div>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr><th>File</th><th>Size</th><th>Type</th><th>Category</th></tr>
+                            </thead>
+                            <tbody id="fileTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="scanLoading" class="text-center py-4 d-none">
+                    <div class="spinner-border text-primary" role="status"></div>
+                    <p class="text-muted mt-2">Scanning files...</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="organizeResults" class="card border-0 rounded-4 d-none">
+            <div class="card-body px-4 py-4">
+                <h6 class="fw-semibold mb-3"><i class="bi bi-check-circle text-success"></i> Organization Complete</h6>
+                <div id="organizeStats" class="row g-3"></div>
+                <div id="organizeLog" class="mt-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card border-0 rounded-4">
+            <div class="card-header bg-transparent border-0 pt-4 px-4">
+                <h6 class="fw-semibold"><i class="bi bi-info-circle text-info"></i> Categories</h6>
+            </div>
+            <div class="card-body px-4 pb-4">
+                {% set categories = [
+                    ("Documents", "file-earmark-text", "primary", ".pdf, .doc, .xlsx..."),
+                    ("Images", "image", "success", ".jpg, .png, .gif..."),
+                    ("Videos", "camera-video", "danger", ".mp4, .avi, .mkv..."),
+                    ("Music", "music-note", "warning", ".mp3, .wav, .flac..."),
+                    ("Archives", "archive", "info", ".zip, .rar, .7z..."),
+                    ("Code", "code-slash", "secondary", ".py, .js, .html..."),
+                    ("Datasets", "table", "success", ".csv, .parquet..."),
+                    ("Others", "file", "secondary", "Everything else"),
+                ] %}
+                {% for name, icon, color, exts in categories %}
+                <div class="d-flex align-items-center py-2 border-bottom border-secondary border-opacity-25">
+                    <i class="bi bi-{{ icon }} text-{{ color }} me-2"></i>
+                    <div>
+                        <small class="fw-semibold d-block">{{ name }}</small>
+                        <small class="text-muted">{{ exts }}</small>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+async function scanFiles() {
+    const source = document.getElementById('sourceDirInput').value.trim();
+    setLoading('scanLoading', true);
+    document.getElementById('scanResults').classList.add('d-none');
+
+    const result = await apiCall('/api/organizer/scan', 'POST', { source_dir: source || undefined });
+    setLoading('scanLoading', false);
+
+    if (result.success) {
+        document.getElementById('scanTitle').textContent = `${result.total_files} files found`;
+        const badges = Object.entries(result.categories).map(([cat, count]) =>
+            `<span class="badge bg-secondary">${cat}: ${count}</span>`).join('');
+        document.getElementById('categoryBadges').innerHTML = badges;
+
+        const rows = result.files.map(f => `
+            <tr>
+                <td><i class="bi bi-file-earmark text-muted me-1"></i>${f.name}</td>
+                <td>${f.size}</td>
+                <td><code>${f.extension || 'none'}</code></td>
+                <td><span class="badge bg-primary bg-opacity-25 text-primary">${f.category}</span></td>
+            </tr>`).join('');
+        document.getElementById('fileTableBody').innerHTML = rows;
+        document.getElementById('scanResults').classList.remove('d-none');
+        showToast('Scan Complete', `Found ${result.total_files} files`, 'success');
+    } else {
+        showToast('Error', result.error || 'Scan failed', 'error');
+    }
+}
+
+async function organizeFiles() {
+    const source = document.getElementById('sourceDirInput').value.trim();
+    const result = await apiCall('/api/organizer/organize', 'POST', { source_dir: source || undefined });
+
+    if (result.success) {
+        document.getElementById('organizeStats').innerHTML = `
+            <div class="col-4"><div class="text-center p-3 rounded-3" style="background:#1a1d26">
+                <h4 class="text-success">${result.organized}</h4><small class="text-muted">Organized</small>
+            </div></div>
+            <div class="col-4"><div class="text-center p-3 rounded-3" style="background:#1a1d26">
+                <h4 class="text-warning">${result.skipped}</h4><small class="text-muted">Skipped</small>
+            </div></div>
+            <div class="col-4"><div class="text-center p-3 rounded-3" style="background:#1a1d26">
+                <h4 class="text-danger">${result.errors}</h4><small class="text-muted">Errors</small>
+            </div></div>`;
+        document.getElementById('organizeResults').classList.remove('d-none');
+        showToast('Done!', `Organized ${result.organized} files`, 'success');
+    }
+}
+</script>
+{% endblock %}

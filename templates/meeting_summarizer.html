@@ -1,0 +1,753 @@
+{% extends "base.html" %}
+{% block title %}PyAutomate — Meeting Summarizer{% endblock %}
+{% block page_title %}<i class="bi bi-mic"></i> Meeting Summarizer{% endblock %}
+
+{% block content %}
+
+<!-- ── Tab Navigation ── -->
+<ul class="nav nav-pills mb-4 gap-2" id="meetingTabs">
+    <li class="nav-item">
+        <button class="nav-link active" onclick="showTab('textTab', this)">
+            <i class="bi bi-file-text"></i> Paste Text
+        </button>
+    </li>
+    <li class="nav-item">
+        <button class="nav-link" onclick="showTab('audioTab', this)">
+            <i class="bi bi-file-music"></i> Upload Audio
+        </button>
+    </li>
+    <li class="nav-item">
+        <button class="nav-link" onclick="showTab('videoTab', this)">
+            <i class="bi bi-camera-video"></i> Upload Video
+        </button>
+    </li>
+    <li class="nav-item">
+        <button class="nav-link" onclick="showTab('liveTab', this)">
+            <i class="bi bi-broadcast-pin text-danger"></i> Live Meeting
+        </button>
+    </li>
+</ul>
+
+<div class="row g-4">
+    <div class="col-lg-12">
+
+        <!-- ── TAB 1: Paste Text ── -->
+        <div id="textTab" class="tab-content-panel">
+            <div class="card border-0 rounded-4 mb-4">
+                <div class="card-header bg-transparent border-0 pt-4 px-4">
+                    <h5 class="fw-semibold"><i class="bi bi-file-text text-warning"></i> Paste or Upload Transcript</h5>
+                    <p class="text-muted small mb-0">Paste text directly or upload a <code>.txt</code> transcript file</p>
+                </div>
+                <div class="card-body px-4 pb-4">
+                    <textarea class="form-control mb-3" id="transcriptInput" rows="10"
+                        placeholder="Paste your meeting transcript here..."></textarea>
+                    <div class="d-flex gap-2 flex-wrap">
+                        <button class="btn btn-primary" onclick="analyzeTranscript()">
+                            <i class="bi bi-cpu"></i> Summarize
+                        </button>
+                        <label class="btn btn-outline-warning">
+                            <i class="bi bi-upload"></i> Upload .txt File
+                            <input type="file" id="textFileInput" accept=".txt" class="d-none"
+                                   onchange="handleTextFile(this)">
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── TAB 2: Upload Audio ── -->
+        <div id="audioTab" class="tab-content-panel d-none">
+            <div class="card border-0 rounded-4 mb-4">
+                <div class="card-header bg-transparent border-0 pt-4 px-4">
+                    <h5 class="fw-semibold"><i class="bi bi-file-music text-success"></i> Upload Audio File</h5>
+                    <p class="text-muted small mb-0">Supported: <strong>.mp3</strong>, .wav, .flac, .ogg, .m4a</p>
+                </div>
+                <div class="card-body px-4 pb-4">
+                    <div id="audioDropZone" class="upload-zone rounded-4 p-5 text-center mb-3"
+                         ondragover="event.preventDefault()" ondrop="handleAudioDrop(event)">
+                        <i class="bi bi-music-note-beamed display-3 text-success mb-3"></i>
+                        <h6 class="fw-semibold">Drop audio file here</h6>
+                        <p class="text-muted small">or click to browse</p>
+                        <label class="btn btn-success mt-2">
+                            <i class="bi bi-upload"></i> Choose Audio File
+                            <input type="file" id="audioFileInput" accept=".wav,.mp3,.flac,.ogg,.m4a,.mpeg,.mpg"
+                                   class="d-none" onchange="handleAudioFile(this)">
+                        </label>
+                    </div>
+                    <div id="audioFileInfo" class="d-none alert border-0 rounded-3"
+                         style="background:#151821">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <i class="bi bi-file-music text-success me-2"></i>
+                                <span id="audioFileName"></span>
+                                <small class="text-muted ms-2" id="audioFileSize"></small>
+                            </div>
+                            <button class="btn btn-success btn-sm" onclick="uploadAudio()">
+                                <i class="bi bi-cpu"></i> Transcribe & Summarize
+                            </button>
+                        </div>
+                    </div>
+                    <div id="audioLoading" class="text-center py-4 d-none">
+                        <div class="spinner-border text-success" role="status"></div>
+                        <p class="text-muted mt-2">Transcribing audio... this may take a moment</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── TAB 3: Upload Video ── -->
+        <div id="videoTab" class="tab-content-panel d-none">
+            <div class="card border-0 rounded-4 mb-4">
+                <div class="card-header bg-transparent border-0 pt-4 px-4">
+                    <h5 class="fw-semibold"><i class="bi bi-camera-video text-info"></i> Upload Video File</h5>
+                    <p class="text-muted small mb-0">Supported: <strong>.mp4</strong>, .avi, .mkv, .mov, .webm — audio will be extracted & transcribed</p>
+                </div>
+                <div class="card-body px-4 pb-4">
+                    <div id="videoDropZone" class="upload-zone rounded-4 p-5 text-center mb-3"
+                         ondragover="event.preventDefault()" ondrop="handleVideoDrop(event)">
+                        <i class="bi bi-camera-video display-3 text-info mb-3"></i>
+                        <h6 class="fw-semibold">Drop video file here</h6>
+                        <p class="text-muted small">Audio will be extracted automatically</p>
+                        <label class="btn btn-info mt-2">
+                            <i class="bi bi-upload"></i> Choose Video File
+                            <input type="file" id="videoFileInput" accept=".mp4,.avi,.mkv,.mov,.webm,.wmv,.mpeg,.mpg"
+                                   class="d-none" onchange="handleVideoFile(this)">
+                        </label>
+                    </div>
+                    <div id="videoFileInfo" class="d-none alert border-0 rounded-3"
+                         style="background:#151821">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <i class="bi bi-camera-video text-info me-2"></i>
+                                <span id="videoFileName"></span>
+                                <small class="text-muted ms-2" id="videoFileSize"></small>
+                            </div>
+                            <button class="btn btn-info btn-sm" onclick="uploadVideo()">
+                                <i class="bi bi-cpu"></i> Extract & Summarize
+                            </button>
+                        </div>
+                    </div>
+                    <div id="videoLoading" class="text-center py-4 d-none">
+                        <div class="spinner-border text-info" role="status"></div>
+                        <p class="text-muted mt-2">Extracting audio from video & transcribing...</p>
+                        <small class="text-muted">Large videos may take 1-2 minutes</small>
+                    </div>
+                    <div id="videoPreview" class="d-none mt-3">
+                        <p class="text-muted small mb-2"><i class="bi bi-play-circle"></i> Video Preview:</p>
+                        <video id="videoPlayer" controls class="w-100 rounded-3"
+                               style="max-height:200px; background:#000"></video>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── TAB 4: Live Meeting ── -->
+        <div id="liveTab" class="tab-content-panel d-none">
+            <div class="card border-0 rounded-4 mb-4">
+                <div class="card-header bg-transparent border-0 pt-4 px-4">
+                    <h5 class="fw-semibold">
+                        <i class="bi bi-broadcast-pin text-danger"></i> Live Meeting Capture
+                    </h5>
+                    <p class="text-muted small mb-0">Join your meeting, capture audio in real-time, get summarized notes</p>
+                </div>
+                <div class="card-body px-4 pb-4">
+                    <div class="mb-4">
+                        <label class="form-label small text-muted fw-semibold">Meeting Link (optional)</label>
+                        <div class="input-group">
+                            <input type="url" class="form-control" id="meetingLink"
+                                   placeholder="https://meet.google.com/xxx or https://teams.microsoft.com/...">
+                            <button class="btn btn-outline-primary" onclick="openMeeting()">
+                                <i class="bi bi-box-arrow-up-right"></i> Join
+                            </button>
+                        </div>
+                        <div class="d-flex gap-2 mt-2">
+                            <button class="btn btn-sm btn-outline-success" onclick="setMeetLink('gmeet')">
+                                <img src="https://www.google.com/favicon.ico" width="14"> Google Meet
+                            </button>
+                            <button class="btn btn-sm btn-outline-primary" onclick="setMeetLink('teams')">
+                                <i class="bi bi-microsoft-teams text-primary"></i> MS Teams
+                            </button>
+                            <button class="btn btn-sm btn-outline-info" onclick="setMeetLink('zoom')">
+                                <i class="bi bi-camera-video text-info"></i> Zoom
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="rounded-4 p-4 mb-4 text-center" style="background:#151821;border:2px dashed #2d3348">
+                        <div id="recordStatus" class="mb-3">
+                            <i class="bi bi-mic display-4 text-muted"></i>
+                            <p class="text-muted mt-2 mb-0">Ready to record</p>
+                        </div>
+                        <div class="d-flex justify-content-center gap-3">
+                            <button class="btn btn-danger btn-lg px-4" id="startRecordBtn" onclick="startRecording()">
+                                <i class="bi bi-record-circle"></i> Start Recording
+                            </button>
+                            <button class="btn btn-secondary btn-lg px-4 d-none" id="stopRecordBtn" onclick="stopRecording()">
+                                <i class="bi bi-stop-circle"></i> Stop & Summarize
+                            </button>
+                        </div>
+                        <div id="recordingTimer" class="mt-3 d-none">
+                            <span class="badge bg-danger px-3 py-2 fs-6">
+                                <i class="bi bi-record-circle-fill"></i>
+                                <span id="timerDisplay">00:00</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div id="liveTranscriptBox" class="d-none">
+                        <label class="form-label small text-muted fw-semibold">
+                            Live Transcript <span class="badge bg-success">Live</span>
+                        </label>
+                        <div id="liveTranscript" class="form-control"
+                             style="height:150px;overflow-y:auto;font-size:0.85rem;background:#0b0e14">
+                        </div>
+                        <button class="btn btn-primary mt-2 w-100" onclick="analyzeLiveTranscript()">
+                            <i class="bi bi-cpu"></i> Summarize Live Transcript
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── LOADING SPINNER ── -->
+        <div id="analysisLoading" class="text-center py-4 d-none">
+            <div class="spinner-border text-warning" role="status"></div>
+            <p class="text-muted mt-2">Summarizing transcript...</p>
+        </div>
+
+        <!-- ── SUMMARY RESULT (single card) ── -->
+        <div id="analysisResults" class="d-none">
+            <div class="card border-0 rounded-4 mb-4">
+                <div class="card-header bg-transparent border-0 pt-4 px-4 d-flex justify-content-between align-items-center">
+                    <h5 class="fw-semibold mb-0"><i class="bi bi-card-text text-primary"></i> Summary</h5>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-sm btn-outline-secondary" onclick="copySummary()">
+                            <i class="bi bi-clipboard"></i> Copy
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body px-4 pb-4">
+                    <div id="summaryText" class="text-white lh-lg" style="white-space: pre-wrap; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 0.95rem;"></div>
+                </div>
+                <div class="card-footer bg-transparent border-0 px-4 pb-4">
+                    <button class="btn btn-warning" id="detailedNotesBtn" onclick="generateDetailedNotes()">
+                        <i class="bi bi-journal-richtext"></i> Generate Detailed Notes
+                    </button>
+                </div>
+            </div>
+
+            <!-- ── DETAILED NOTES ── -->
+            <div id="detailedLoading" class="text-center py-4 d-none">
+                <div class="spinner-border text-warning" role="status"></div>
+                <p class="text-muted mt-2">Generating detailed exam-ready notes...</p>
+            </div>
+
+            <div id="detailedNotesSection" class="d-none">
+                <div class="card border-0 rounded-4 mb-4">
+                    <div class="card-header bg-transparent border-0 pt-4 px-4 d-flex justify-content-between align-items-center">
+                        <h5 class="fw-semibold mb-0"><i class="bi bi-journal-richtext text-warning"></i> Detailed Notes</h5>
+                        <button class="btn btn-sm btn-outline-secondary" onclick="copyDetailedNotes()">
+                            <i class="bi bi-clipboard"></i> Copy
+                        </button>
+                    </div>
+                    <div class="card-body px-4 pb-4">
+                        <div id="detailedNotesText" class="text-white lh-lg" style="white-space: pre-wrap; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 0.95rem;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── CHATBOT ── -->
+            <div class="card border-0 rounded-4 mb-4">
+                <div class="card-header bg-transparent border-0 pt-4 px-4 d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="fw-semibold mb-0"><i class="bi bi-chat-dots text-info"></i> Ask a Doubt</h5>
+                        <p class="text-muted small mb-0">Ask any question about the transcript topics</p>
+                    </div>
+                    <button class="btn btn-sm btn-outline-danger" onclick="clearChat()">
+                        <i class="bi bi-trash"></i> Clear
+                    </button>
+                </div>
+                <div class="card-body px-4 pb-4">
+                    <div id="chatMessages" class="mb-3 rounded-3 p-3" style="background:#0b0e14; height: 300px; overflow-y: auto;">
+                        <div class="text-center text-muted py-4">
+                            <i class="bi bi-chat-dots display-6"></i>
+                            <p class="mt-2 small">Ask any question about the topics covered in this session</p>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="chatInput"
+                               placeholder="Type your question here..." onkeypress="if(event.key==='Enter') sendChat()">
+                        <button class="btn btn-info" onclick="sendChat()" id="chatSendBtn">
+                            <i class="bi bi-send"></i> Ask
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── EXPORT ── -->
+            <div class="card border-0 rounded-4">
+                <div class="card-header bg-transparent border-0 pt-4 px-4">
+                    <h6 class="fw-semibold"><i class="bi bi-download text-success"></i> Exported Files</h6>
+                </div>
+                <div class="card-body px-4 pb-4">
+                    <p class="text-muted small mb-3">Files automatically saved to <code>data/meeting_output/</code></p>
+                    <div class="d-flex flex-column gap-3">
+                        <div>
+                            <small class="text-muted d-block mb-1 fw-bold text-uppercase" style="font-size:0.65rem">Summary</small>
+                            <div class="d-flex flex-column gap-1">
+                                <div class="d-flex align-items-center gap-2 p-2 rounded-3" style="background:#151821">
+                                    <i class="bi bi-file-word text-primary"></i>
+                                    <small>meeting_YYYYMMDD.docx</small>
+                                </div>
+                                <div class="d-flex align-items-center gap-2 p-2 rounded-3" style="background:#151821">
+                                    <i class="bi bi-file-text text-success"></i>
+                                    <small>meeting_YYYYMMDD.txt</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="detailedExportInfo" class="d-none">
+                            <small class="text-muted d-block mb-1 fw-bold text-uppercase" style="font-size:0.65rem">Detailed Notes</small>
+                            <div class="d-flex flex-column gap-1">
+                                <div class="d-flex align-items-center gap-2 p-2 rounded-3" style="background:#151821">
+                                    <i class="bi bi-file-word text-warning"></i>
+                                    <small>detailed_notes_YYYYMMDD.docx</small>
+                                </div>
+                                <div class="d-flex align-items-center gap-2 p-2 rounded-3" style="background:#151821">
+                                    <i class="bi bi-file-text text-warning"></i>
+                                    <small>detailed_notes_YYYYMMDD.txt</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// ── Tab switching ──
+function showTab(tabId, btn) {
+    document.querySelectorAll('.tab-content-panel').forEach(t => t.classList.add('d-none'));
+    document.querySelectorAll('#meetingTabs .nav-link').forEach(b => b.classList.remove('active'));
+    document.getElementById(tabId).classList.remove('d-none');
+    btn.classList.add('active');
+}
+
+// ── Upload .txt file ──
+function handleTextFile(input) {
+    const file = input.files[0];
+    if (!file) return;
+    if (!file.name.endsWith('.txt')) {
+        showToast('Warning', 'Only .txt transcript files are supported', 'warning');
+        return;
+    }
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        document.getElementById('transcriptInput').value = e.target.result;
+        showToast('Loaded', `Transcript loaded from ${file.name}`, 'success');
+    };
+    reader.readAsText(file);
+}
+
+// ── Store current state ──
+let currentTranscript = '';
+let currentSummary = '';
+
+// ── Analyze transcript ──
+async function analyzeTranscript() {
+    const transcript = document.getElementById('transcriptInput').value.trim();
+    if (!transcript) { showToast('Warning', 'Please enter a transcript', 'warning'); return; }
+    await runAnalysis(transcript);
+}
+
+async function runAnalysis(transcript) {
+    setLoading('analysisLoading', true);
+    document.getElementById('analysisResults').classList.add('d-none');
+    document.getElementById('detailedNotesSection').classList.add('d-none');
+
+    const result = await apiCall('/api/meeting/analyze', 'POST', { transcript });
+    setLoading('analysisLoading', false);
+
+    if (result.success && result.data) {
+        currentTranscript = transcript;
+        currentSummary = result.data.summary;
+        displayResults(result.data);
+        showToast('Done!', 'Summary generated successfully', 'success');
+    } else {
+        showToast('Error', result.error || 'Summarization failed', 'error');
+    }
+}
+
+function displayResults(d) {
+    document.getElementById('summaryText').textContent = d.summary;
+    document.getElementById('analysisResults').classList.remove('d-none');
+    // Reset detailed notes and chat
+    document.getElementById('detailedNotesSection').classList.add('d-none');
+    document.getElementById('detailedNotesBtn').disabled = false;
+    document.getElementById('detailedNotesBtn').innerHTML = '<i class="bi bi-journal-richtext"></i> Generate Detailed Notes';
+    document.getElementById('chatMessages').innerHTML = `
+        <div class="text-center text-muted py-4">
+            <i class="bi bi-chat-dots display-6"></i>
+            <p class="mt-2 small">Ask any question about the topics covered in this session</p>
+        </div>`;
+}
+
+function copySummary() {
+    const text = document.getElementById('summaryText').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+        showToast('Copied', 'Summary copied to clipboard', 'success');
+    });
+}
+
+function copyDetailedNotes() {
+    const text = document.getElementById('detailedNotesText').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+        showToast('Copied', 'Detailed notes copied to clipboard', 'success');
+    });
+}
+
+// ── Detailed Notes ──
+async function generateDetailedNotes() {
+    if (!currentTranscript) {
+        showToast('Warning', 'No transcript available', 'warning');
+        return;
+    }
+
+    const btn = document.getElementById('detailedNotesBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Generating...';
+
+    setLoading('detailedLoading', true);
+    document.getElementById('detailedNotesSection').classList.add('d-none');
+
+    const result = await apiCall('/api/meeting/detailed-notes', 'POST', {
+        transcript: currentTranscript,
+        summary: currentSummary
+    });
+
+    setLoading('detailedLoading', false);
+    btn.disabled = false;
+    btn.innerHTML = '<i class="bi bi-journal-richtext"></i> Regenerate Detailed Notes';
+
+    if (result.success && result.notes) {
+        document.getElementById('detailedNotesText').textContent = result.notes;
+        document.getElementById('detailedNotesSection').classList.remove('d-none');
+        document.getElementById('detailedExportInfo').classList.remove('d-none');
+        showToast('Done!', 'Detailed notes generated and saved', 'success');
+    } else {
+        showToast('Error', result.error || 'Failed to generate detailed notes', 'error');
+    }
+}
+
+function clearChat() {
+    document.getElementById('chatMessages').innerHTML = `
+        <div class="text-center text-muted py-4">
+            <i class="bi bi-chat-dots display-6"></i>
+            <p class="mt-2 small">Ask any question about the topics covered in this session</p>
+        </div>`;
+}
+
+// ── Chatbot ──
+async function sendChat() {
+    const input = document.getElementById('chatInput');
+    const question = input.value.trim();
+    if (!question) return;
+
+    if (!currentTranscript) {
+        showToast('Warning', 'No transcript available. Summarize a transcript first.', 'warning');
+        return;
+    }
+
+    const chatBox = document.getElementById('chatMessages');
+    // Remove placeholder if present
+    const placeholder = chatBox.querySelector('.text-center.text-muted');
+    if (placeholder) placeholder.remove();
+
+    // Add user message
+    chatBox.innerHTML += `
+        <div class="d-flex justify-content-end mb-3">
+            <div class="rounded-3 px-3 py-2" style="background:#2d3348; max-width:80%;">
+                <small class="text-white">${escapeHtml(question)}</small>
+            </div>
+        </div>`;
+
+    input.value = '';
+    input.disabled = true;
+    document.getElementById('chatSendBtn').disabled = true;
+
+    // Add typing indicator
+    const typingId = 'typing-' + Date.now();
+    chatBox.innerHTML += `
+        <div class="d-flex mb-3" id="${typingId}">
+            <div class="rounded-3 px-3 py-2" style="background:#151821; max-width:80%;">
+                <small class="text-muted"><span class="spinner-border spinner-border-sm me-1"></span> Thinking...</small>
+            </div>
+        </div>`;
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    const result = await apiCall('/api/meeting/chat', 'POST', {
+        transcript: currentTranscript,
+        summary: currentSummary,
+        question: question
+    });
+
+    // Remove typing indicator
+    const typingEl = document.getElementById(typingId);
+    if (typingEl) typingEl.remove();
+
+    input.disabled = false;
+    document.getElementById('chatSendBtn').disabled = false;
+    input.focus();
+
+    if (result.success && result.answer) {
+        chatBox.innerHTML += `
+            <div class="d-flex mb-3">
+                <div class="rounded-3 px-3 py-2" style="background:#151821; border:1px solid #2d3348; max-width:85%;">
+                    <small class="text-white" style="white-space:pre-wrap;">${escapeHtml(result.answer)}</small>
+                </div>
+            </div>`;
+    } else {
+        chatBox.innerHTML += `
+            <div class="d-flex mb-3">
+                <div class="rounded-3 px-3 py-2 border-danger" style="background:#151821; max-width:80%;">
+                    <small class="text-danger">Failed to get answer. Try again.</small>
+                </div>
+            </div>`;
+    }
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// ── Audio upload ──
+function handleAudioDrop(e) {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if (file) showAudioInfo(file);
+}
+function handleAudioFile(input) {
+    if (input.files[0]) showAudioInfo(input.files[0]);
+}
+function showAudioInfo(file) {
+    document.getElementById('audioFileName').textContent = file.name;
+    document.getElementById('audioFileSize').textContent = formatBytes(file.size);
+    document.getElementById('audioFileInfo').classList.remove('d-none');
+    document.getElementById('audioFileInfo')._file = file;
+}
+async function uploadAudio() {
+    const info = document.getElementById('audioFileInfo');
+    const file = info._file;
+    if (!file) return;
+    setLoading('audioLoading', true);
+    info.classList.add('d-none');
+    const formData = new FormData();
+    formData.append('file', file);
+    try {
+        const resp = await fetch('/api/meeting/upload', { method: 'POST', body: formData });
+        const result = await resp.json();
+        setLoading('audioLoading', false);
+        if (result.success && result.data) {
+            displayResults(result.data);
+            showToast('Done!', 'Audio transcribed and summarized', 'success');
+        } else {
+            showToast('Error', result.error || 'Upload failed', 'error');
+        }
+    } catch(e) {
+        setLoading('audioLoading', false);
+        showToast('Error', e.message, 'error');
+    }
+}
+
+// ── Video upload ──
+function handleVideoDrop(e) {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if (file) showVideoInfo(file);
+}
+function handleVideoFile(input) {
+    if (input.files[0]) showVideoInfo(input.files[0]);
+}
+function showVideoInfo(file) {
+    document.getElementById('videoFileName').textContent = file.name;
+    document.getElementById('videoFileSize').textContent = formatBytes(file.size);
+    document.getElementById('videoFileInfo').classList.remove('d-none');
+    document.getElementById('videoFileInfo')._file = file;
+
+    const videoPlayer = document.getElementById('videoPlayer');
+    videoPlayer.src = URL.createObjectURL(file);
+    document.getElementById('videoPreview').classList.remove('d-none');
+}
+async function uploadVideo() {
+    const info = document.getElementById('videoFileInfo');
+    const file = info._file;
+    if (!file) return;
+    setLoading('videoLoading', true);
+    info.classList.add('d-none');
+    const formData = new FormData();
+    formData.append('file', file);
+    try {
+        const resp = await fetch('/api/meeting/upload-video', { method: 'POST', body: formData });
+        const result = await resp.json();
+        setLoading('videoLoading', false);
+        if (result.success && result.data) {
+            displayResults(result.data);
+            showToast('Done!', 'Video audio extracted and summarized', 'success');
+        } else {
+            showToast('Error', result.error || 'Video processing failed', 'error');
+        }
+    } catch(e) {
+        setLoading('videoLoading', false);
+        showToast('Error', e.message, 'error');
+    }
+}
+
+// ── Live Recording ──
+let mediaRecorder = null;
+let audioChunks = [];
+let timerInterval = null;
+let seconds = 0;
+let liveTranscriptText = '';
+
+function setMeetLink(service) {
+    const links = {
+        gmeet: 'https://meet.google.com/',
+        teams: 'https://teams.microsoft.com/',
+        zoom: 'https://zoom.us/join',
+    };
+    document.getElementById('meetingLink').value = links[service] || '';
+}
+
+function openMeeting() {
+    const link = document.getElementById('meetingLink').value.trim();
+    if (link) { window.open(link, '_blank'); }
+    else { showToast('Info', 'Enter a meeting link first', 'info'); }
+}
+
+async function startRecording() {
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        audioChunks = [];
+        liveTranscriptText = '';
+        mediaRecorder = new MediaRecorder(stream);
+
+        mediaRecorder.ondataavailable = e => { if (e.data.size > 0) audioChunks.push(e.data); };
+        mediaRecorder.start(1000);
+
+        document.getElementById('startRecordBtn').classList.add('d-none');
+        document.getElementById('stopRecordBtn').classList.remove('d-none');
+        document.getElementById('recordingTimer').classList.remove('d-none');
+        document.getElementById('liveTranscriptBox').classList.remove('d-none');
+        document.getElementById('recordStatus').innerHTML = `
+            <div class="pulse-dot mx-auto mb-2"></div>
+            <p class="text-danger mb-0 fw-semibold">Recording...</p>`;
+
+        seconds = 0;
+        timerInterval = setInterval(() => {
+            seconds++;
+            const m = String(Math.floor(seconds / 60)).padStart(2, '0');
+            const s = String(seconds % 60).padStart(2, '0');
+            document.getElementById('timerDisplay').textContent = `${m}:${s}`;
+        }, 1000);
+
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+            window._recognition = new SpeechRec();
+            window._recognition.continuous = true;
+            window._recognition.interimResults = true;
+            window._recognition.lang = 'en-US';
+            window._recognition.onresult = (event) => {
+                let interim = '';
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    if (event.results[i].isFinal) {
+                        liveTranscriptText += event.results[i][0].transcript + ' ';
+                    } else {
+                        interim += event.results[i][0].transcript;
+                    }
+                }
+                const el = document.getElementById('liveTranscript');
+                el.textContent = liveTranscriptText + interim;
+                el.scrollTop = el.scrollHeight;
+            };
+            window._recognition.start();
+        }
+
+        showToast('Recording', 'Microphone capture started', 'success');
+
+    } catch (err) {
+        showToast('Error', 'Microphone access denied. Please allow mic permission.', 'error');
+    }
+}
+
+function stopRecording() {
+    if (mediaRecorder) {
+        mediaRecorder.stop();
+        mediaRecorder.stream.getTracks().forEach(t => t.stop());
+    }
+    if (window._recognition) {
+        window._recognition.stop();
+    }
+    clearInterval(timerInterval);
+
+    document.getElementById('startRecordBtn').classList.remove('d-none');
+    document.getElementById('stopRecordBtn').classList.add('d-none');
+    document.getElementById('recordingTimer').classList.add('d-none');
+    document.getElementById('recordStatus').innerHTML = `
+        <i class="bi bi-check-circle-fill display-4 text-success"></i>
+        <p class="text-success mt-2 mb-0">Recording stopped — ${seconds}s captured</p>`;
+
+    showToast('Stopped', `${seconds} seconds recorded`, 'info');
+
+    if (liveTranscriptText.trim().length > 50) {
+        setTimeout(() => analyzeLiveTranscript(), 500);
+    }
+}
+
+async function analyzeLiveTranscript() {
+    const transcript = liveTranscriptText.trim() ||
+                       document.getElementById('liveTranscript').textContent.trim();
+    if (!transcript) {
+        showToast('Warning', 'No transcript captured yet', 'warning');
+        return;
+    }
+    await runAnalysis(transcript);
+}
+
+// ── Helpers ──
+function formatBytes(bytes) {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / 1048576).toFixed(1) + ' MB';
+}
+</script>
+
+<style>
+.upload-zone {
+    border: 2px dashed #2d3348;
+    background: #0b0e14;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+.upload-zone:hover {
+    border-color: var(--accent-primary);
+    background: rgba(99,102,241,0.05);
+}
+.pulse-dot {
+    width: 16px; height: 16px;
+    background: #ef4444;
+    border-radius: 50%;
+    animation: pulse 1s infinite;
+}
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.4); opacity: 0.7; }
+}
+</style>
+{% endblock %}

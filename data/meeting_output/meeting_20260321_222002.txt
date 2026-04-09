@@ -1,0 +1,29 @@
+MEETING SUMMARY
+==================================================
+
+Generated: 2026-03-21T22:20:01.930620
+Words: 576 | Sentences: 32
+
+SUMMARY
+------------------------------
+Here’s a **human-like random transcript** (conversation-style notes) based on **Python subject topics** 👇 --- ## 🧑‍🏫 Python Class Transcript (Informal + Realistic) **Teacher:** Okay guys, today we’ll continue with Python. --- **Teacher:** Now tell me… do we need to define the data type in Python like in C or Java? --- ### 📌 Topic: Data Types **Teacher:** Python has different data types: * int → `10` * float → `3.14` * string → `"hello"` * boolean → `True/False` * list → `[1,2,3]` * tuple → `(1,2,3)` * dictionary → `{"a":1}` --- **Student 3:** Ma’am what is the difference between list and tuple? ```python if num > 0: print("Positive") elif num == 0: print("Zero") else: print("Negative") ``` --- ### 📌 Topic: Loops **Teacher:** There are two main loops: 1. --- **Teacher:** While loop example: ```python i = 0 while i < 5: print(i) i += 1 ``` --- ### 📌 Topic: Functions **Teacher:** Functions help us reuse code. **Teacher:** Using index: ```python print(marks[0]) ``` --- ### 📌 Topic: Strings **Teacher:** Strings are sequences of characters. ```python name = "Python" print(name.lower()) print(name.upper()) ``` --- ### 📌 Topic: File Handling **Teacher:** Now file handling: ```python file = open("test.txt", "r") data = file.read() print(data) file.close() ``` --- **Student 2:** Ma’am what is `"r"`? ```python class Student: def __init__(self, name): self.name = name def display(self): print(self.name) s = Student("Hani") s.display() ``` --- **Student 3:** Ma’am what is `self`?
+
+KEYWORDS
+------------------------------
+  • python (22x)
+  • teacher (21x)
+  • print (14x)
+  • student (11x)
+  • name (9x)
+  • topic (8x)
+  • data (7x)
+  • file (6x)
+  • class (5x)
+  • self (5x)
+
+ACTION ITEMS
+------------------------------
+  ☐ --- **Teacher:** Now tell me… do we need to define the data type in Python like in C or Java?
+
+DECISIONS
+------------------------------

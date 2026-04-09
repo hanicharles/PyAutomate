@@ -1,0 +1,31 @@
+line
+📘 Class Summary Notes ([Main Topics Covered])
+🗂️ 1. **Database Overview**
+- MongoDB: a type of database
+- Unstructured vs Structured Data:
+"  • Unstructured data: e.g., images, videos, audio files"
+"  • Structured data: e.g., tables, spreadsheets"
+- Key difference: unstructured data doesn't follow a specific format
+🧠 2. **NoSQL vs SQL**
+"- NoSQL: Not Only SQL, a type of database that doesn't follow traditional table-based structure"
+"- SQL: Structured Query Language, a traditional database management system"
+📊 3. **Assignment / Task**
+- Create a Language Model (LLM) using the RATHOD model
+- Provide feedback through the RATHOD model
+- Example use cases:
+  • University policies
+  • Fees for AI courses
+  • Exam rules and grading system
+🧩 4. **Database Storage**
+- Main goal: create a database storage system
+- Vector database and RACK model
+- Use API calls to interact with the database (using NVIDIA API keys)
+🛠️ 5. **Implementation Notes**
+"- Use API calls to interact with the database, rather than downloading the LLM and working offline"
+"- This will make the process easier, but may require more space"
+⏰ 6. **Deadline**
+- Complete the assignment by today evening
+🧾 Key Takeaways
+• Create a database storage system using a vector database and RACK model
+• Use API calls to interact with the database
+• Complete the assignment by today evening

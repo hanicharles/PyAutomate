@@ -1,0 +1,30 @@
+📝 Summary – Python Project Presentation Feedback
+📌 Project Overview
+Topic: Building a Question Answering System using LLM and Vector Database
+Goal:
+- Create a database storage system using a vector database and LLM
+- Develop a question answering system for University policies and other information
+
+⚠️ Problems in Current (Manual) System
+- Lack of efficient information retrieval system
+- Difficulty in accessing information about University policies and other related topics
+
+❌ Issues Identified in Your Project
+1. **Lack of Clear Understanding of Database Types**
+- Confusion between structured and unstructured data
+- Difficulty in explaining the difference between NoSQL and SQL databases
+2. **Insufficient Information about Project Requirements**
+- Unclear expectations about the project's goals and requirements
+- Need for more guidance on how to approach the project
+3. **Limited Understanding of LLM and Vector Database**
+- Difficulty in explaining how LLM and vector database work together
+- Need for more information on how to implement and use these technologies
+
+💡 Suggestions for Improvement
+- Provide more clear and concise information about the project's goals and requirements
+- Offer additional guidance and support on how to approach the project
+- Encourage students to ask questions and seek help when needed
+- Consider providing more resources and materials on LLM and vector database
+
+🎯 Key Takeaway
+👉 The project requires a better understanding of database types, LLM, and vector database, as well as more clear guidance on project requirements to ensure successful completion.

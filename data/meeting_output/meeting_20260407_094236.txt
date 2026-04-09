@@ -1,0 +1,37 @@
+📘 Class Summary Notes (Database and LLM)
+
+🗂️ 1. **Database Overview**
+- MongoDB is a type of database
+- It is a NoSQL database, meaning it is not based on SQL (Structured Query Language)
+- It is used for storing unstructured and structured data
+
+🧠 2. **Structured vs. Unstructured Data**
+- Structured data is organized and has a specific format
+- Unstructured data is not organized and does not have a specific format
+- Examples of unstructured data include text, images, and videos
+
+📊 3. **Assignment and LLM**
+- Create a Language Model (LLM) using a database
+- The LLM will be used to answer questions and provide information
+- Example use cases include:
+  🔹 University policies
+  🔹 Fees for a course
+  🔹 Exam rules and grading system
+
+🧩 4. **API Calls and NVIDIA Keys**
+- Use API calls to interact with the database and LLM
+- NVIDIA keys are used to generate API keys
+- The instructor recommends using API calls instead of downloading the LLM offline
+
+🛠️ 5. **Implementation Notes**
+- The LLM will be used to provide information to employees in a company
+- The instructor will provide feedback through RATHOD
+- The assignment should be completed by today evening
+
+⏰ 6. **Deadline**
+- The assignment should be completed by today evening
+
+🧾 Key Takeaways
+- MongoDB is a NoSQL database used for storing unstructured and structured data
+- Create a Language Model (LLM) using a database to answer questions and provide information
+- Use API calls to interact with the database and LLM

@@ -1,0 +1,33 @@
+📝 Summary – Python Project Presentation Feedback
+📌 Project Overview
+Topic: Intelligent Research Paper Discovery System
+Goal:
+- To create a system that can search for relevant research papers based on topics
+- To provide a deep summary of the papers and allow users to ask questions and receive answers via email or WhatsApp
+
+⚠️ Problems in Current (Manual) System
+- Traditional keyword-based searching can be complex and time-consuming
+- Researchers often spend a lot of time searching for relevant papers
+- The growth of academic publishing papers has created a critical information overload
+
+❌ Issues Identified in Your Project
+1. Code Issues
+- The code was not working properly during the presentation
+- The speaker had to troubleshoot and fix the issues on the spot
+- Screenshots and backend videos were not available to demonstrate the project
+2. Clarity and Explanation
+- The speaker had difficulty explaining their code and the project's functionality
+- They relied on vague statements and did not provide clear answers to questions
+3. Project Completion
+- The project was not fully completed, with only a demo left to be shown
+- The speaker had to extend the code and fix issues before the presentation
+
+💡 Suggestions for Improvement
+- Provide clear and concise explanations of the project and code
+- Ensure that the code is working properly before the presentation
+- Create screenshots and backend videos to demonstrate the project's functionality
+- Complete the project before the presentation and provide a fully functional demo
+- Practice explaining the project and code to ensure clarity and confidence
+
+🎯 Key Takeaway
+👉 The project has potential, but it requires significant improvement in terms of code quality, clarity of explanation, and completion of the project before the presentation.

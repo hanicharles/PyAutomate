@@ -1,0 +1,36 @@
+📘 Class Summary Notes ([Main Topics Covered])
+
+🗂️ 1. **Database Overview**
+- MongoDB: a type of database
+- Unstructured vs. Structured Data:
+  - Unstructured data: e.g., images, videos
+  - Structured data: e.g., tables, spreadsheets
+
+🧠 2. **NoSQL and SQL Databases**
+- NoSQL: Not Only SQL, for handling unstructured data
+- SQL: Structured Query Language, for handling structured data
+
+📊 3. **Assignment and Project**
+- Create a Large Language Model (LLM)
+- Use RATHOD model for providing information
+- Example use cases:
+  - University policies
+  - Fees for AI courses
+  - Exam rules and grading system
+
+🧩 4. **Database Storage and API Calls**
+- Main goal: create a database storage (vector database)
+- Use NVIDIA API keys for API calls
+- No need to download LLM offline
+
+🛠️ 5. **Implementation Notes**
+- Use API calls to call elements
+- LLM can be used for question-answering systems
+
+⏰ 6. **Deadline**
+- Complete the project by today evening
+
+🧾 Key Takeaways
+- Understand the difference between unstructured and structured data
+- Create a database storage using vector database and LLM
+- Use NVIDIA API keys for API calls

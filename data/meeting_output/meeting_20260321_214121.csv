@@ -1,0 +1,12 @@
+type,content,count
+keyword,teacher,20
+keyword,print,14
+keyword,student,11
+keyword,name,9
+keyword,topic,8
+keyword,python,7
+keyword,data,6
+keyword,file,5
+keyword,self,5
+keyword,marks,4
+action_item,Teacher: Now tell me… do we need to define the data type in Python like in C or Java?,

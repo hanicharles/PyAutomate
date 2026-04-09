@@ -1,0 +1,38 @@
+MEETING SUMMARY
+==================================================
+
+Generated: 2026-03-21T20:14:23.726675
+Words: 121 | Sentences: 15
+
+SUMMARY
+------------------------------
+John mentioned that the backend API is 80 percent complete. Action items: John will complete backend by January 30th. Sarah will start frontend development next Monday.
+
+KEYWORDS
+------------------------------
+  • next (3x)
+  • launch (2x)
+  • john (2x)
+  • backend (2x)
+  • complete (2x)
+  • january (2x)
+  • sarah (2x)
+  • confirmed (2x)
+  • frontend (2x)
+  • good (1x)
+
+ACTION ITEMS
+------------------------------
+  ☐ We need to finish the remaining endpoints by January 30th.
+  ☐ Action items: John will complete backend by January 30th.
+  ☐ Sarah will start frontend development next Monday.
+  ☐ Mike needs to prepare cloud infrastructure comparison.
+  ☐ Who will handle the client presentation next week?
+  ☐ What is the fallback plan if the deadline is missed?
+
+DECISIONS
+------------------------------
+  ✓ Sarah confirmed that UI mockups are finalized.
+  ✓ We decided to use React for the frontend framework.
+  ✓ We agreed to allocate 50000 dollars for marketing.
+  ✓ The launch date has been confirmed for March 15th.

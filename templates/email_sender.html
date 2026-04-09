@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block title %}PyAutomate — Email Sender{% endblock %}
+{% block page_title %}<i class="bi bi-envelope"></i> Email Sender{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+    <div class="col-lg-8">
+        <!-- Single Email -->
+        <div class="card border-0 rounded-4 mb-4">
+            <div class="card-header bg-transparent border-0 pt-4 px-4">
+                <h5 class="fw-semibold"><i class="bi bi-send text-primary"></i> Send Single Email</h5>
+            </div>
+            <div class="card-body px-4 pb-4">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label small text-muted">Recipient Name</label>
+                        <input type="text" class="form-control" id="emailName" placeholder="John Doe">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small text-muted">Email Address</label>
+                        <input type="email" class="form-control" id="emailTo" placeholder="john@example.com">
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label small text-muted">Subject</label>
+                        <input type="text" class="form-control" id="emailSubject" placeholder="Email subject...">
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label small text-muted">Message (use {name} for personalization)</label>
+                        <textarea class="form-control" id="emailBody" rows="4"
+                                  placeholder="Hi {name}, ..."></textarea>
+                    </div>
+                    <div class="col-12">
+                        <button class="btn btn-primary px-4" onclick="sendSingleEmail()">
+                            <i class="bi bi-send"></i> Send Email
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bulk Email -->
+        <div class="card border-0 rounded-4">
+            <div class="card-header bg-transparent border-0 pt-4 px-4">
+                <h5 class="fw-semibold"><i class="bi bi-envelope-fill text-success"></i> Bulk Email from CSV</h5>
+                <p class="text-muted small mb-0">Send personalized emails to all recipients in data/recipients.csv</p>
+            </div>
+            <div class="card-body px-4 pb-4">
+                <div id="recipientsList" class="mb-3"></div>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-outline-secondary" onclick="previewRecipients()">
+                        <i class="bi bi-eye"></i> Preview
+                    </button>
+                    <button class="btn btn-success" onclick="sendBulkEmail()">
+                        <i class="bi bi-envelope-fill"></i> Send Bulk
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card border-0 rounded-4">
+            <div class="card-header bg-transparent border-0 pt-4 px-4">
+                <h6 class="fw-semibold"><i class="bi bi-info-circle text-warning"></i> Setup Required</h6>
+            </div>
+            <div class="card-body px-4 pb-4">
+                <p class="text-muted small">Configure your email credentials in the <code>.env</code> file:</p>
+                <pre class="rounded-3 p-3 small" style="background:#151821;color:#e2e8f0">EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_ADDRESS=your@email.com
+EMAIL_PASSWORD=app-password</pre>
+                <p class="text-muted small mt-2">For Gmail, use an <strong>App Password</strong> (not your regular password).</p>
+                <a href="{{ url_for('settings_page') }}" class="btn btn-sm btn-outline-primary w-100">
+                    <i class="bi bi-gear"></i> Open Settings
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+async function sendSingleEmail() {
+    const data = {
+        name: document.getElementById('emailName').value,
+        email: document.getElementById('emailTo').value,
+        subject: document.getElementById('emailSubject').value,
+        body: document.getElementById('emailBody').value,
+    };
+    if (!data.email || !data.subject) {
+        showToast('Warning', 'Please fill in email and subject', 'warning');
+        return;
+    }
+    const result = await apiCall('/api/email/send-single', 'POST', data);
+    if (result.success) {
+        showToast('Sent!', `Email sent to ${data.email}`, 'success');
+    } else {
+        showToast('Error', result.error || 'Send failed', 'error');
+    }
+}
+
+async function previewRecipients() {
+    const result = await apiCall('/api/email/preview');
+    if (result.success && result.recipients.length > 0) {
+        const rows = result.recipients.map(r => `
+            <div class="d-flex align-items-center py-2 border-bottom border-secondary border-opacity-25">
+                <i class="bi bi-person-circle text-muted me-2"></i>
+                <div>
+                    <small class="fw-semibold">${r.name || 'Unknown'}</small>
+                    <small class="text-muted d-block">${r.email}</small>
+                </div>
+                <span class="ms-auto badge bg-secondary">${r.subject || ''}</span>
+            </div>`).join('');
+        document.getElementById('recipientsList').innerHTML = `
+            <p class="text-muted small mb-2">${result.count} recipients loaded</p>${rows}`;
+        showToast('Loaded', `${result.count} recipients found`, 'info');
+    } else {
+        showToast('Info', 'No recipients found in CSV', 'info');
+    }
+}
+
+async function sendBulkEmail() {
+    if (!confirm('Send emails to all recipients in CSV?')) return;
+    const result = await apiCall('/api/email/send-bulk', 'POST', {});
+    if (result.success) {
+        showToast('Done', `Sent: ${result.sent}, Failed: ${result.failed}`, 'success');
+    } else {
+        showToast('Error', result.error || 'Bulk send failed', 'error');
+    }
+}
+</script>
+{% endblock %}

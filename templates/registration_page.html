@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %}PyAutomate — Visitor Registration{% endblock %}
+{% block page_title %}<i class="bi bi-person-plus"></i> Visitor Registration{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+    <div class="col-lg-6">
+        <!-- QR Code Display -->
+        <div class="card border-0 rounded-4 shadow-sm h-100">
+            <div class="card-header bg-transparent border-0 pt-4 px-4 text-center">
+                <h5 class="fw-bold mb-0">Scan to Register</h5>
+                <p class="text-muted small">Ask visitors to scan this QR code to register their details.</p>
+            </div>
+            <div class="card-body px-4 pb-4 text-center">
+                <div class="p-4 bg-white rounded-4 d-inline-block shadow-sm mb-4">
+                    <img src="{{ url_for('api_email_qr') }}" alt="QR Code" class="img-fluid" style="max-width: 280px; width: 100%;">
+                </div>
+                <div class="mt-2">
+                    <p class="text-muted small mb-3">Or share this link directly:</p>
+                    <div class="input-group input-group-sm mb-3 mx-auto" style="max-width: 400px;">
+                        <input type="text" class="form-control" id="formUrl" value="https://forms.gle/4yCwNX8NLdaboAR76" readonly>
+                        <button class="btn btn-outline-primary" type="button" onclick="copyUrl()">
+                            <i class="bi bi-clipboard"></i> Copy
+                        </button>
+                    </div>
+                </div>
+                <a href="https://forms.gle/4yCwNX8NLdaboAR76" target="_blank" class="btn btn-primary btn-sm px-4">
+                    <i class="bi bi-box-arrow-up-right"></i> Open Form Preview
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <!-- Recent Visitors -->
+        <div class="card border-0 rounded-4 shadow-sm h-100">
+            <div class="card-header bg-transparent border-0 pt-4 px-4 d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold mb-0">Recent Visitors</h5>
+                <button class="btn btn-sm btn-outline-secondary" onclick="loadVisitors()">
+                    <i class="bi bi-arrow-clockwise"></i> Refresh
+                </button>
+            </div>
+            <div class="card-body px-4 pb-4">
+                <div id="visitorList" class="mt-2">
+                    <div class="text-center py-5 text-muted">
+                        <div class="spinner-border spinner-border-sm mb-2"></div>
+                        <p class="small mb-0">Loading visitors...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer bg-transparent border-0 px-4 pb-4">
+                <p class="text-muted small mb-0">
+                    <i class="bi bi-file-earmark-excel"></i> 
+                    Full history is saved to <code>data/visitors.xlsx</code>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+async function loadVisitors() {
+    const list = document.getElementById('visitorList');
+    list.innerHTML = '<div class="text-center py-5 text-muted"><div class="spinner-border spinner-border-sm mb-2"></div><p class="small mb-0">Loading visitors...</p></div>';
+    
+    try {
+        const result = await apiCall('/api/visitor/list');
+        if (result.success && result.visitors.length > 0) {
+            list.innerHTML = result.visitors.map(v => `
+                <div class="d-flex align-items-center py-3 border-bottom border-secondary border-opacity-25">
+                    <div class="rounded-circle bg-primary bg-opacity-10 p-2 me-3">
+                        <i class="bi bi-person text-primary"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="d-flex justify-content-between">
+                            <h6 class="mb-0 fw-semibold">${v.Name}</h6>
+                            <small class="text-muted">${v.Timestamp}</small>
+                        </div>
+                        <p class="mb-0 small text-muted">${v.Email}</p>
+                        <div class="mt-1">
+                            <span class="badge bg-secondary fw-normal" style="font-size: 0.7rem;">
+                                <i class="bi bi-info-circle me-1"></i>${v.Reason}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        } else {
+            list.innerHTML = '<div class="text-center py-5 text-muted"><p class="small mb-0">No visitors found yet.</p></div>';
+        }
+    } catch (err) {
+        list.innerHTML = '<div class="text-center py-5 text-danger"><p class="small mb-0">Failed to load visitors.</p></div>';
+    }
+}
+
+function copyUrl() {
+    const el = document.getElementById('formUrl');
+    el.select();
+    document.execCommand('copy');
+    showToast('Copied!', 'Link copied to clipboard', 'success');
+}
+
+// Initial load
+document.addEventListener('DOMContentLoaded', loadVisitors);
+</script>
+{% endblock %}

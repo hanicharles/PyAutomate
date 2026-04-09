@@ -1,0 +1,31 @@
+📘 Class Summary Notes ([Main Topics Covered])
+
+🗂️ 1. **Database Types**
+- Structured vs Unstructured Data
+  • Structured data: organized and follows a specific format
+  • Unstructured data: does not follow a specific format
+
+🧠 2. **NoSQL Databases**
+- MongoDB: example of a NoSQL database
+- Not only SQL (NoSQL): stores data in a different way than traditional relational databases
+
+📊 3. **Assignment**
+- Create a Language Model (LLM) using a NoSQL database
+- Use RATHOD (a model) to provide feedback
+- Example use case: create a model to provide information about a company to employees
+
+🧩 4. **Implementation Notes**
+- Use API calls to interact with the database (e.g., NVIDIA API key)
+- Do not download the LLM and work with it offline (unless you have a development environment)
+
+💡 5. **Example Use Cases**
+- Building a question-answering system for University policies
+- Asking about fees, exam rules, and grading systems
+
+🛠️ 6. **Deadline**
+- Complete the assignment by today evening
+
+🧾 Key Takeaways
+- Understand the difference between structured and unstructured data
+- Learn about NoSQL databases and their use cases
+- Create a Language Model (LLM) using a NoSQL database and provide feedback through RATHOD

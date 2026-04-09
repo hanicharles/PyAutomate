@@ -1,0 +1,2 @@
+city,timestamp,temp_c,temp_f,feels_like_c,humidity,description,icon,wind_kmph,uv_index,sunrise,sunset,max_temp_c,min_temp_c
+"malur, India",2026-03-12T17:25:52.159861,30.6,87.1,27.7,24,Mainly clear,🌤️,15.5,2.4,06:27,18:28,32.7,17.2

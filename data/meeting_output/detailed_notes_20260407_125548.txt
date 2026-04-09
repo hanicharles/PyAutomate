@@ -1,0 +1,104 @@
+**📘 1. Database Types**
+
+📚 **What is a Database?**
+A database is a collection of organized data that can be easily accessed, managed, and updated.
+
+📝 **Structured vs Unstructured Data**
+
+🔹 **Structured Data**
+✅ Organized and follows a specific format
+✅ Easy to search, retrieve, and manipulate
+✅ Examples: relational databases (e.g., MySQL), spreadsheets (e.g., Excel)
+
+```json
+{
+  "name": "John Doe",
+  "age": 30,
+  "address": {
+    "street": "123 Main St",
+    "city": "Anytown",
+    "state": "CA",
+    "zip": "12345"
+  }
+}
+```
+
+🔹 **Unstructured Data**
+✅ Does not follow a specific format
+✅ Difficult to search, retrieve, and manipulate
+✅ Examples: text documents, images, videos, audio files
+
+**Comparison Table: Structured vs Unstructured Data**
+
+|  | Structured Data | Unstructured Data |
+| --- | --- | --- |
+| **Format** | Follows a specific format | Does not follow a specific format |
+| **Searchability** | Easy to search | Difficult to search |
+| **Manipulation** | Easy to manipulate | Difficult to manipulate |
+
+**📘 2. NoSQL Databases**
+
+📚 **What is a NoSQL Database?**
+A NoSQL database is a type of database that does not use the traditional table-based relational model.
+
+🔹 **Not Only SQL (NoSQL)**
+✅ Stores data in a different way than traditional relational databases
+✅ Examples: MongoDB, Cassandra, Redis
+
+📝 **MongoDB: An Example of a NoSQL Database**
+MongoDB is a popular NoSQL database that stores data in a JSON-like format.
+
+```json
+{
+  "_id": ObjectId,
+  "name": "John Doe",
+  "age": 30,
+  "address": {
+    "street": "123 Main St",
+    "city": "Anytown",
+    "state": "CA",
+    "zip": "12345"
+  }
+}
+```
+
+**📘 3. Assignment**
+
+📚 **Create a Language Model (LLM)**
+Create a Language Model (LLM) using a NoSQL database to provide feedback through RATHOD.
+
+🔹 **Example Use Case: Company Information**
+✅ Create a model to provide information about a company to employees
+✅ Use RATHOD to provide feedback on the model
+
+**📘 4. Implementation Notes**
+
+📚 **Use API Calls to Interact with the Database**
+Use API calls to interact with the database, such as the NVIDIA API key.
+
+📝 **Do Not Download the LLM and Work with it Offline**
+Unless you have a development environment, do not download the LLM and work with it offline.
+
+**📘 5. Example Use Cases**
+
+📚 **Building a Question-Answering System**
+Build a question-answering system for University policies.
+
+📝 **Asking about Fees, Exam Rules, and Grading Systems**
+Ask about fees, exam rules, and grading systems using the LLM.
+
+**📘 6. Deadline**
+
+📚 **Complete the Assignment by Today Evening**
+Complete the assignment by today evening.
+
+**✅ Final Key Points**
+
+📝 **Understand the Difference between Structured and Unstructured Data**
+Understand the difference between structured and unstructured data.
+
+📝 **Learn about NoSQL Databases and their Use Cases**
+Learn about NoSQL databases and their use cases.
+
+📝 **Create a Language Model (LLM) using a NoSQL Database**
+Create a Language Model (LLM) using a NoSQL database and provide feedback through RATHOD.

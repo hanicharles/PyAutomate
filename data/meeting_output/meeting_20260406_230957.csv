@@ -1,0 +1,28 @@
+line
+📘 Class Summary Notes ([Main Topics Covered])
+🗂️ 1. **MongoDB and NoSQL Databases**
+- MongoDB is a type of NoSQL database.
+"- NoSQL stands for Not Only SQL, which differentiates it from traditional relational databases."
+- The main difference between NoSQL and traditional databases is the way they handle structured and unstructured data.
+🧠 2. **Structured vs Unstructured Data**
+- Structured data is organized and follows a specific format.
+- Unstructured data is free-form and does not follow a specific format.
+📊 3. **Assignment and Task**
+- Create a Large Language Model (LLM) using a NoSQL database.
+- The LLM will be used to answer questions and provide information on various topics.
+- Examples of tasks:
+  🔹 Building a question-answering system for University policies.
+"  🔹 Asking about fees, exam rules, and grading systems."
+🧩 4. **Database Storage**
+- The main goal is to create a database storage system using a vector database.
+- The system will use a rack model and an LLM.
+🛠️ 5. **API Calls and Offline Work**
+- Use API calls to interact with the database instead of downloading the LLM and working offline.
+- This will make the process easier and save space.
+⏰ 6. **Deadline**
+- Complete the assignment by today evening.
+🧾 Key Takeaways
+- Create a NoSQL database using MongoDB.
+- Understand the difference between structured and unstructured data.
+- Build a question-answering system using an LLM and a vector database.
+- Use API calls to interact with the database instead of working offline.

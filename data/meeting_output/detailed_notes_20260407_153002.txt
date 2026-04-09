@@ -1,0 +1,149 @@
+📚 Detailed Study Notes
+
+**📘 1. Database Types**
+
+🤔 **What is it?**
+A database is a collection of organized data that can be accessed, managed, and updated.
+
+📝 **Key Features:**
+✅ **Structured Data**: organized and formatted data
+✅ **Unstructured Data**: unorganized and unformatted data
+✅ **Schema**: a blueprint or a structure that defines the organization of the data
+
+📊 **Comparison Table:**
+
+|  | Structured Data | Unstructured Data |
+| --- | --- | --- |
+| **Organization** | Organized and formatted | Unorganized and unformatted |
+| **Schema** | Has a predefined schema | Does not have a predefined schema |
+| **Example** | Relational databases like MySQL | Text files, images, videos |
+
+📝 **Example Code:**
+```sql
+-- Structured Data (MySQL)
+CREATE TABLE customers (
+  id INT PRIMARY KEY,
+  name VARCHAR(255),
+  email VARCHAR(255)
+);
+
+-- Unstructured Data (Text File)
+// customers.txt
+John Doe john.doe@example.com
+Jane Doe jane.doe@example.com
+```
+
+**📘 2. NoSQL Databases**
+
+🤔 **What is it?**
+NoSQL is a type of database that doesn't use the traditional table-based relational model.
+
+📝 **Key Features:**
+✅ **Not only SQL**: NoSQL databases don't use SQL as their primary query language
+✅ **Schema-less**: NoSQL databases don't require a predefined schema
+✅ **Flexible data model**: NoSQL databases can store data in various formats
+
+📊 **Comparison Table:**
+
+|  | Relational Databases (SQL) | NoSQL Databases |
+| --- | --- | --- |
+| **Data Model** | Table-based relational model | Flexible data model |
+| **Schema** | Has a predefined schema | Schema-less |
+| **Example** | MySQL, PostgreSQL | MongoDB, Cassandra |
+
+📝 **Example Code:**
+```python
+# MongoDB (NoSQL)
+from pymongo import MongoClient
+
+client = MongoClient('mongodb://localhost:27017/')
+db = client['mydatabase']
+collection = db['customers']
+
+# Insert a document
+collection.insert_one({
+  'name': 'John Doe',
+  'email': 'john.doe@example.com'
+})
+```
+
+**📘 3. Assignment and Project**
+
+🤔 **What is it?**
+Create a Language Model (LLM) for a specific task using the RATHOD model.
+
+📝 **Key Features:**
+✅ **Language Model**: a type of machine learning model that generates human-like text
+✅ **RATHOD model**: a type of language model that uses a transformer architecture
+✅ **Task-specific**: the LLM is trained for a specific task, such as question-answering
+
+📊 **Example:**
+```python
+# Building a question-answering system for University policies
+import torch
+from transformers import T5ForConditionalGeneration, T5Tokenizer
+
+model = T5ForConditionalGeneration.from_pretrained('t5-base')
+tokenizer = T5Tokenizer.from_pretrained('t5-base')
+
+# Define the task-specific prompt
+prompt = 'What are the exam rules?'
+
+# Generate the response
+response = model.generate(prompt, max_length=100)
+
+print(response)
+```
+
+**📘 4. Goal and Deadline**
+
+🤔 **What is it?**
+The main goal is to create a database storage system, and the deadline is to complete the assignment by today evening.
+
+📝 **Key Features:**
+✅ **Goal**: create a database storage system
+✅ **Deadline**: complete the assignment by today evening
+
+📊 **Implementation Notes:**
+
+|  | Goal | Deadline |
+| --- | --- | --- |
+| **Database Storage System** | Create a database storage system | Complete the assignment by today evening |
+
+**📘 5. Implementation Notes**
+
+🤔 **What is it?**
+Use the NVIDIA API key for API calls and do not download the LLM into the system.
+
+📝 **Key Features:**
+✅ **NVIDIA API key**: use the API key for API calls
+✅ **No download**: do not download the LLM into the system
+
+📊 **Technical Guidance:**
+
+|  | NVIDIA API Key | No Download |
+| --- | --- | --- |
+| **API Calls** | Use the API key for API calls | No need to download the LLM into the system |
+
+**📘 6. Technical Guidance**
+
+🤔 **What is it?**
+Use the API calls to call the elements and do not download the LLM into the system.
+
+📝 **Key Features:**
+✅ **API Calls**: use the API calls to call the elements
+✅ **No download**: do not download the LLM into the system
+
+📊 **Implementation Notes:**
+
+|  | API Calls | No Download |
+| --- | --- | --- |
+| **Element Calling** | Use the API calls to call the elements | No need to download the LLM into the system |
+
+**✅ Final Key Points:**
+
+* Understand the difference between structured and unstructured data
+* Learn about NoSQL databases and their applications
+* Create a Language Model (LLM) for a specific task using the RATHOD model
+* Use NVIDIA API key for API calls
+* Do not download the LLM into the system

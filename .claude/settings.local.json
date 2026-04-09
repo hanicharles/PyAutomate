@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip install:*)",
+      "Bash(python process_transcript.py)",
+      "Bash(python -c \"from modules.meeting_summarizer import MeetingSummarizer; print\\('Import OK'\\)\")",
+      "Bash(python -c ':*)",
+      "Bash(python app.py)",
+      "Bash(curl -s http://localhost:5000/meeting)",
+      "Bash(pkill -f \"python app.py\")",
+      "Bash(python -c \"from modules.meeting_summarizer import MeetingSummarizer; s = MeetingSummarizer\\(\\); print\\('OK', hasattr\\(s,'generate_detailed_notes'\\), hasattr\\(s,'chat'\\)\\)\")",
+      "Bash(rm:*)",
+      "Bash(find \"C:/Users/chalu/Downloads/PyAutomate_v2_updated/PyAutomate\" -name \"*.pyc\" -path \"*meeting*\" -delete)",
+      "Read(//c/Users/chalu/Downloads/PyAutomate_v2_updated/**)"
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+type,content,count
+keyword,sprint,2
+keyword,ravi,2
+keyword,payment,2
+keyword,integration,2
+keyword,testing,2
+keyword,neha,2
+keyword,profile,2
+keyword,module,2
+keyword,complete,2
+keyword,next,2
+action_item,Today we will assign tasks for sprint number 12.,
+action_item,Testing is pending and will be done by Friday.,
+action_item,The backend will be developed using Django framework.,
+action_item,Action items: Ravi will test payment integration.,
+action_item,Neha will complete profile module.,
+action_item,Arjun will handle API documentation.,
+action_item,Who will monitor system performance after deployment?,
+decision,Today we will assign tasks for sprint number 12.,
+decision,Ravi confirmed that the payment gateway integration is completed.,
+decision,We approved a budget of 30000 rupees for testing tools.,

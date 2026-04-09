@@ -1,0 +1,28 @@
+MEETING SUMMARY
+==================================================
+
+Generated: 2026-04-06T11:41:02.988287
+Words: 146 | Sentences: 14
+
+SUMMARY
+------------------------------
+SHILPA J 0 40:04 SHILPA J 0 minutes 4 seconds Good morning, everyone. SHILPA J 0 minutes 48 seconds Good morning everyone today. SHILPA J 0 minutes 54 seconds My project is regarding a smart notes AI, whereas in I think I'll be like one more to work now.
+
+KEYWORDS
+------------------------------
+  • shilpa (10x)
+  • seconds (9x)
+  • minutes (5x)
+  • minute (4x)
+  • good (2x)
+  • morning (2x)
+  • everyone (2x)
+  • change (2x)
+  • today (1x)
+  • project (1x)
+
+ACTION ITEMS
+------------------------------
+
+DECISIONS
+------------------------------

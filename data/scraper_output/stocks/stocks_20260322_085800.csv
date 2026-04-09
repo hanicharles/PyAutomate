@@ -1,0 +1,4 @@
+symbol,price,prev_close,change,change_pct,currency,exchange,name,timestamp
+AAPL,247.99,249.94,-1.95,-0.78,USD,NMS,Apple Inc.,2026-03-22T08:57:57.977125
+GOOGL,301.0,307.69,-6.69,-2.17,USD,NMS,Alphabet Inc.,2026-03-22T08:57:59.090387
+MSFT,381.87,391.79,-9.92,-2.53,USD,NMS,Microsoft Corporation,2026-03-22T08:58:00.660156
